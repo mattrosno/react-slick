@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Slider from "../src/slider";
 
 export default class AdaptiveHeight extends Component {
@@ -7,7 +8,7 @@ export default class AdaptiveHeight extends Component {
       className: "",
       dots: true,
       infinite: true,
-      slidesToShow: 1,
+      slidesToShow: 3,
       slidesToScroll: 1,
       adaptiveHeight: true
     };
@@ -20,11 +21,11 @@ export default class AdaptiveHeight extends Component {
           </div>
           <div>
             <h3>2</h3>
-            <p>Hello</p>
+            <p>You should see one text line here...</p>
           </div>
           <div>
             <h3>3</h3>
-            <p>See ....</p>
+            <p>You should see two text lines here...</p>
             <p>Height is adaptive</p>
           </div>
           <div>

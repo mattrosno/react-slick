@@ -1,31 +1,31 @@
 "use strict";
 
-import React from "react";
-import initialState from "./initial-state";
-import debounce from "lodash.debounce";
-import classnames from "classnames";
+import { NextArrow, PrevArrow } from "./arrows";
 import {
-  getOnDemandLazySlides,
-  extractObject,
-  initializedState,
-  getHeight,
   canGoNext,
-  slideHandler,
   changeSlide,
-  keyHandler,
-  swipeStart,
-  swipeMove,
-  swipeEnd,
-  getPreClones,
+  extractObject,
+  getHeight,
+  getOnDemandLazySlides,
   getPostClones,
+  getPreClones,
+  getTrackCSS,
   getTrackLeft,
-  getTrackCSS
+  initializedState,
+  keyHandler,
+  slideHandler,
+  swipeEnd,
+  swipeMove,
+  swipeStart
 } from "./utils/innerSliderUtils";
 
-import { Track } from "./track";
 import { Dots } from "./dots";
-import { PrevArrow, NextArrow } from "./arrows";
+import React from "react";
 import ResizeObserver from "resize-observer-polyfill";
+import { Track } from "./track";
+import classnames from "classnames";
+import debounce from "lodash.debounce";
+import initialState from "./initial-state";
 
 export class InnerSlider extends React.Component {
   constructor(props) {
@@ -47,10 +47,13 @@ export class InnerSlider extends React.Component {
   trackRefHandler = ref => (this.track = ref);
   adaptHeight = () => {
     if (this.props.adaptiveHeight && this.list) {
-      const elem = this.list.querySelector(
-        `[data-index="${this.state.currentSlide}"]`
-      );
-      this.list.style.height = getHeight(elem) + "px";
+      let maxHeight = 0;
+      for (let i = 0; i < this.props.slidesToShow; i++) {
+        const slideIndex = this.state.currentSlide + i;
+        const elem = this.list.querySelector(`[data-index="${slideIndex}"]`);
+        maxHeight = Math.max(getHeight(elem), maxHeight);
+      }
+      this.list.style.height = maxHeight + "px";
     }
   };
   componentDidMount = () => {
@@ -304,7 +307,8 @@ export class InnerSlider extends React.Component {
   };
   checkImagesLoad = () => {
     let images =
-      (this.list && this.list.querySelectorAll &&
+      (this.list &&
+        this.list.querySelectorAll &&
         this.list.querySelectorAll(".slick-slide img")) ||
       [];
     let imagesCount = images.length,
